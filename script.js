@@ -8,6 +8,12 @@ class Node {
     }
 }
 
+class Tree {
+    constructor() {
+        this.root = buildTree(array);
+    }
+}
+
 const test = new Node();
 console.log(test.left);
 console.log(test.mid);
