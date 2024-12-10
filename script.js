@@ -1,5 +1,5 @@
 class Node {
-    constructor() {
+    constructor(data) {
         this.data = data;
         this.left = null;
         this.right = null;
@@ -8,18 +8,23 @@ class Node {
 }
 
 class Tree {
-    constructor() {
+    constructor(array) {
         this.root = buildTree(array);
     }
 }
 
 function buildTree(array) {
+    let mid = array[Math.floor(array.length / 2)];
+    let left = array.slice(0, mid - 1);
+    let right = array.slice(mid, array.length);
 
+    return mid;
 }
 
+const sampleArr = [1, 2, 3];
 const test = new Node();
-console.log(test.left);
-console.log(test.mid);
-console.log(test.right);
+const tree = new Tree(sampleArr);
+console.log(tree.root);
+
 
 
