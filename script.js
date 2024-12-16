@@ -8,9 +8,25 @@ class Node {
 }
 
 class Tree {
-    constructor(array) {
-        this.root = buildTree(array, 0, array.length - 1);
+  constructor(array) {
+      this.root = buildTree(array, 0, array.length - 1);
+  }
+  // value = 6;
+  insert(value, currentNode = this.root) {
+
+    if (currentNode == null)
+      return new Node(value);
+
+    if (value == currentNode.data) return; // Test this later.
+
+    if (value < currentNode.data) {
+      currentNode.left = this.insert(value, currentNode.left);
+    } else {
+      currentNode.right = this.insert(value, currentNode.right);
     }
+    
+    return currentNode;
+  }
 }
 
 // We need to remove the duplicates first
@@ -49,9 +65,20 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     }
   };
 
+
 const sampleArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const tree = new Tree(sampleArr);
+const arrayOfFive = [1, 10, 5, 6, 5];
+const tree = new Tree(arrayOfFive);
+// prettyPrint(tree.root);
+// tree.insert(6);
 prettyPrint(tree.root);
+// tree.insert(10);
+// prettyPrint(tree.root);
+// tree.insert(3);
+// prettyPrint(tree.root);
+
+
+
 
     
 // let left = array.slice(0, mid - 1);
