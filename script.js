@@ -33,6 +33,20 @@ class Tree {
     return node;
   }
 
+  // A project provided utility method for visualization
+  prettyPrint(node = this.root, prefix = "", isLeft = true) {
+    if (node === null) {
+      return;
+    }
+    if (node.right !== null) {
+      this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+      this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+  }
+
   insert(value, currentNode = this.root) {
     if (currentNode == null) {
       return new Node(value);
@@ -49,18 +63,42 @@ class Tree {
     return currentNode;
   }
 
-  // A project provided utility method for visualization
-  prettyPrint(node = this.root, prefix = "", isLeft = true) {
-    if (node === null) {
-      return;
+  getSuccessor(curr) {
+    curr = curr.right;
+    while (curr !== null && curr.left !== null) {
+        curr = curr.left;
     }
-    if (node.right !== null) {
-      this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    return curr;
+  }
+
+  deleteItem(value, currentNode = this.root) {
+    if (currentNode === null) {
+      return currentNode;
     }
-    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    if (node.left !== null) {
-      this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+
+    // If key to be searched is in a subtree
+    if (currentNode.data > value) {
+      currentNode.left = this.deleteItem(value, currentNode.left);
+    } else if (currentNode.data < value) {
+      currentNode.right = this.deleteItem(value, currentNode.right);
+    } else {
+        // If root matches with the given key
+
+        // Cases when root has 0 children or 
+        // only right child
+        if (currentNode.left === null) 
+            return currentNode.right;
+
+        // When root has only left child
+        if (currentNode.right === null) 
+            return currentNode.left;
+
+        // When both children are present
+        let successor = this.getSuccessor(currentNode);
+        currentNode.data = successor.data;
+        currentNode.right = this.deleteItem(successor.data, currentNode.right);
     }
+    return currentNode;
   }
 }
 
@@ -69,13 +107,20 @@ const sampleArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const arrayOfFive = [1, 10, 5, 6, 5, 5,6,8];
 
 const tree = new Tree(arrayOfFive);
+tree.insert(7);
 tree.prettyPrint();
 
-tree.insert(11);
+tree.deleteItem(7)
 tree.prettyPrint();
 
-tree.insert(2);
+tree.insert(7);
 tree.prettyPrint();
 
-tree.insert(4);
+tree.deleteItem(6)
 tree.prettyPrint();
+
+// tree.insert(2);
+// tree.prettyPrint();
+
+// tree.insert(4);
+// tree.prettyPrint();
