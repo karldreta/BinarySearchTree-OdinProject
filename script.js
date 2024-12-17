@@ -113,6 +113,24 @@ class Tree {
       return currentNode.right = this.find(value, currentNode.right);
     }
   }
+
+  levelOrder(callback) {
+    if (this.root == null) return; 
+    const queue = [this.root]; // Start with the root node in the queue
+
+    // Traverse level by level
+    while (queue.length > 0) {
+      const currentNode = queue.shift(); // We take the first node at the front of the queue
+      callback(currentNode); // call the callback function for the first node (we'll print it).
+      
+      if (currentNode.left) {
+        queue.push(currentNode.left);
+      }
+      if (currentNode.right) {
+        queue.push(currentNode.right);
+      }
+    }
+  }
 }
 
 // Sample Usage
@@ -122,4 +140,5 @@ const arrayOfFive = [1, 10, 5, 6, 5, 5,6,8];
 const tree = new Tree(arrayOfFive);
 tree.insert(7);
 tree.prettyPrint();
-console.log(tree.find(6));
+// console.log(tree.find(6));
+tree.levelOrder(node => console.log(node.data))
