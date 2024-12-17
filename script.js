@@ -63,6 +63,7 @@ class Tree {
     return currentNode;
   }
 
+  // Utility function for deleteItem
   getSuccessor(curr) {
     curr = curr.right;
     while (curr !== null && curr.left !== null) {
@@ -100,6 +101,18 @@ class Tree {
     }
     return currentNode;
   }
+
+  find(value, currentNode = this.root) {
+    if (currentNode === null) return null;
+
+    if (value === currentNode.data) return currentNode;
+
+    if (value < currentNode.data) {
+      return currentNode.left = this.find(value, currentNode.left);
+    } else {
+      return currentNode.right = this.find(value, currentNode.right);
+    }
+  }
 }
 
 // Sample Usage
@@ -109,18 +122,4 @@ const arrayOfFive = [1, 10, 5, 6, 5, 5,6,8];
 const tree = new Tree(arrayOfFive);
 tree.insert(7);
 tree.prettyPrint();
-
-tree.deleteItem(7)
-tree.prettyPrint();
-
-tree.insert(7);
-tree.prettyPrint();
-
-tree.deleteItem(6)
-tree.prettyPrint();
-
-// tree.insert(2);
-// tree.prettyPrint();
-
-// tree.insert(4);
-// tree.prettyPrint();
+console.log(tree.find(6));
