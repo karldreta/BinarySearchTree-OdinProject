@@ -160,6 +160,16 @@ class Tree {
     if(currentNode.left) this.preOrder(callback, currentNode.left);
     if(currentNode.right) this.preOrder(callback, currentNode.right);
   }
+
+  postOrder(callback, currentNode = this.root) {
+    // Post order traversal moves from left -> right -> current, so all we have to do is call the callback last.
+    if (typeof callback !== 'function') throw new Error("Please provide Callback!");
+    if (currentNode == null) return;
+
+    if(currentNode.left) this.postOrder(callback, currentNode.left);
+    if(currentNode.right) this.postOrder(callback, currentNode.right);
+    callback(currentNode); // Call the callback last.
+  }
 }
 
 // Sample Usage
@@ -170,4 +180,4 @@ const tree = new Tree(arrayOfFive);
 tree.insert(7);
 tree.prettyPrint();
 // tree.inOrder(node => console.log(node.data));
-tree.preOrder(node => console.log(node.data));
+tree.postOrder(node => console.log(node.data));
