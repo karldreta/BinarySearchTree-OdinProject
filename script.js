@@ -15,7 +15,7 @@ class Tree {
 
   removeDuplicatesAndSort(array) {
     const uniqueArray = array.filter(
-      (item, index) => array.indexOf(item) === index
+      (item, index) => array.indexOf(item) === index,
     );
     return uniqueArray.sort((a, b) => a - b);
   }
@@ -39,7 +39,11 @@ class Tree {
       return;
     }
     if (node.right !== null) {
-      this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+      this.prettyPrint(
+        node.right,
+        `${prefix}${isLeft ? "│   " : "    "}`,
+        false,
+      );
     }
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
     if (node.left !== null) {
@@ -67,7 +71,7 @@ class Tree {
   getSuccessor(curr) {
     curr = curr.right;
     while (curr !== null && curr.left !== null) {
-        curr = curr.left;
+      curr = curr.left;
     }
     return curr;
   }
@@ -83,21 +87,19 @@ class Tree {
     } else if (currentNode.data < value) {
       currentNode.right = this.deleteItem(value, currentNode.right);
     } else {
-        // If root matches with the given key
+      // If root matches with the given key
 
-        // Cases when root has 0 children or 
-        // only right child
-        if (currentNode.left === null) 
-            return currentNode.right;
+      // Cases when root has 0 children or
+      // only right child
+      if (currentNode.left === null) return currentNode.right;
 
-        // When root has only left child
-        if (currentNode.right === null) 
-            return currentNode.left;
+      // When root has only left child
+      if (currentNode.right === null) return currentNode.left;
 
-        // When both children are present
-        let successor = this.getSuccessor(currentNode);
-        currentNode.data = successor.data;
-        currentNode.right = this.deleteItem(successor.data, currentNode.right);
+      // When both children are present
+      let successor = this.getSuccessor(currentNode);
+      currentNode.data = successor.data;
+      currentNode.right = this.deleteItem(successor.data, currentNode.right);
     }
     return currentNode;
   }
@@ -108,22 +110,23 @@ class Tree {
     if (value === currentNode.data) return currentNode;
 
     if (value < currentNode.data) {
-      return currentNode.left = this.find(value, currentNode.left);
+      return (currentNode.left = this.find(value, currentNode.left));
     } else {
-      return currentNode.right = this.find(value, currentNode.right);
+      return (currentNode.right = this.find(value, currentNode.right));
     }
   }
 
   levelOrder(callback) {
-    if (typeof callback !== 'function') throw new Error("Please provide Callback!");
-    if (this.root == null) return; 
+    if (typeof callback !== "function")
+      throw new Error("Please provide Callback!");
+    if (this.root == null) return;
     const queue = [this.root]; // Start with the root node in the queue
 
     // Traverse level by level
     while (queue.length > 0) {
       const currentNode = queue.shift(); // We take the first node at the front of the queue
       callback(currentNode); // call the callback function for the first node (for example, we'll print it).
-      
+
       if (currentNode.left) {
         queue.push(currentNode.left);
       }
@@ -134,50 +137,64 @@ class Tree {
   }
 
   inOrder(callback, currentNode = this.root) {
-    if (typeof callback !== 'function') throw new Error("Please provide Callback!");
+    if (typeof callback !== "function")
+      throw new Error("Please provide Callback!");
     if (currentNode == null) return;
 
-    if (currentNode.left) { 
-        this.inOrder(callback, currentNode.left); // We visit left until null, hitting our base case.
-    }
-    
-    callback(currentNode);     // After the base case we move to this line, calling the callback.
-
-    if (currentNode.right) { 
-        this.inOrder(callback, currentNode.right); // If this there is a right, we'll visit that, and if that has a left then we go there first, until null.
+    if (currentNode.left) {
+      this.inOrder(callback, currentNode.left); // We visit left until 'null', hitting our base case.
     }
 
-    // Note: Notice that there is no explicit return, this is handled by the call stack, as we traverse the node, calling the callback until null, it will naturally exit and unwind to the predecessor caller.
+    callback(currentNode); // After the base case we move to this line, calling the callback.
+
+    if (currentNode.right) {
+      this.inOrder(callback, currentNode.right); // If this there is a right, we'll visit that, and if that has a left then we go there first, until 'null'.
+    }
+
+    // Note: Notice that there is no explicit return, this is handled by the call stack, as we traverse the node, calling the callback until 'null', it will naturally exit and unwind to the predecessor caller.
   }
 
   preOrder(callback, currentNode = this.root) {
     // We'll generally solve this just like how we did the inOrder traversal, but we'll be calling the callback before the any recursion.
-    if (typeof callback !== 'function') throw new Error("Please provide Callback!");
+    if (typeof callback !== "function")
+      throw new Error("Please provide Callback!");
     if (currentNode == null) return;
 
     callback(currentNode); // call the callback first.
 
-    if(currentNode.left) this.preOrder(callback, currentNode.left);
-    if(currentNode.right) this.preOrder(callback, currentNode.right);
+    if (currentNode.left) this.preOrder(callback, currentNode.left);
+    if (currentNode.right) this.preOrder(callback, currentNode.right);
   }
 
   postOrder(callback, currentNode = this.root) {
     // Post order traversal moves from left -> right -> current, so all we have to do is call the callback last.
-    if (typeof callback !== 'function') throw new Error("Please provide Callback!");
+    if (typeof callback !== "function")
+      throw new Error("Please provide Callback!");
     if (currentNode == null) return;
 
-    if(currentNode.left) this.postOrder(callback, currentNode.left);
-    if(currentNode.right) this.postOrder(callback, currentNode.right);
+    if (currentNode.left) this.postOrder(callback, currentNode.left);
+    if (currentNode.right) this.postOrder(callback, currentNode.right);
     callback(currentNode); // Call the callback last.
+  }
+
+  height(node) {
+    if (node === null) return -1;
+
+    let lHeight = this.height(node.left);
+    let rHeight = this.height(node.right);
+
+    return Math.max(lHeight, rHeight) + 1;
   }
 }
 
 // Sample Usage
 const sampleArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const arrayOfFive = [1, 10, 5, 6, 5, 5,6,8];
+const arrayOfFive = [1, 10, 5, 6, 5, 5, 6, 8];
 
-const tree = new Tree(arrayOfFive);
+const tree = new Tree(sampleArr);
 tree.insert(7);
 tree.prettyPrint();
 // tree.inOrder(node => console.log(node.data));
-tree.postOrder(node => console.log(node.data));
+// tree.postOrder(node => console.log(node.data));
+let findHeight = tree.find(9);
+console.log(tree.height(findHeight));
