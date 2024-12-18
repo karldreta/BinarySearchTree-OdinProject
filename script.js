@@ -132,6 +132,23 @@ class Tree {
       }
     }
   }
+
+  inOrder(callback, currentNode = this.root) {
+    if (typeof callback !== 'function') throw new Error("Please provide Callback!");
+    if (currentNode == null) return;
+
+    if (currentNode.left) { 
+        this.inOrder(callback, currentNode.left); // We visit left until null, hitting our base case.
+    }
+    
+    callback(currentNode);     // After the base case we move to this line, calling the callback.
+
+    if (currentNode.right) { 
+        this.inOrder(callback, currentNode.right); // If this there is a right, we'll visit that, and if that has a left then we go there first, until null.
+    }
+
+    // Note: Notice that there is no explicit return, this is handled by the call stack, as we traverse the node, calling the callback until null, it will naturally exit and unwind to the predecessor caller.
+  }
 }
 
 // Sample Usage
@@ -140,6 +157,5 @@ const arrayOfFive = [1, 10, 5, 6, 5, 5,6,8];
 
 const tree = new Tree(arrayOfFive);
 tree.insert(7);
-// tree.prettyPrint();
-// console.log(tree.find(6));
-tree.levelOrder()
+tree.prettyPrint();
+tree.inOrder(node => console.log(node.data));
