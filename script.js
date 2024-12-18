@@ -149,6 +149,17 @@ class Tree {
 
     // Note: Notice that there is no explicit return, this is handled by the call stack, as we traverse the node, calling the callback until null, it will naturally exit and unwind to the predecessor caller.
   }
+
+  preOrder(callback, currentNode = this.root) {
+    // We'll generally solve this just like how we did the inOrder traversal, but we'll be calling the callback before the any recursion.
+    if (typeof callback !== 'function') throw new Error("Please provide Callback!");
+    if (currentNode == null) return;
+
+    callback(currentNode); // call the callback first.
+
+    if(currentNode.left) this.preOrder(callback, currentNode.left);
+    if(currentNode.right) this.preOrder(callback, currentNode.right);
+  }
 }
 
 // Sample Usage
@@ -158,4 +169,5 @@ const arrayOfFive = [1, 10, 5, 6, 5, 5,6,8];
 const tree = new Tree(arrayOfFive);
 tree.insert(7);
 tree.prettyPrint();
-tree.inOrder(node => console.log(node.data));
+// tree.inOrder(node => console.log(node.data));
+tree.preOrder(node => console.log(node.data));
