@@ -178,12 +178,9 @@ class Tree {
   }
 
   height(node) {
-    if (node === null) return -1;
-
-    let lHeight = this.height(node.left);
-    let rHeight = this.height(node.right);
-
-    return Math.max(lHeight, rHeight) + 1;
+    return !node 
+    ? -1 
+    : Math.max(this.height(node.left), this.height(node.right)) + 1;
   }
 }
 
@@ -196,5 +193,5 @@ tree.insert(7);
 tree.prettyPrint();
 // tree.inOrder(node => console.log(node.data));
 // tree.postOrder(node => console.log(node.data));
-let findHeight = tree.find(9);
+let findHeight = tree.find(4);
 console.log(tree.height(findHeight));
