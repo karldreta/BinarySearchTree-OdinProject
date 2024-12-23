@@ -106,15 +106,18 @@ class Tree {
 
   find(value, currentNode = this.root) {
     if (currentNode === null) return null;
-
+  
+    // If the value is found, return the node
     if (value === currentNode.data) return currentNode;
-
+  
+    // Recursively search to the left or right depending on the value
     if (value < currentNode.data) {
-      return (currentNode.left = this.find(value, currentNode.left));
+      return this.find(value, currentNode.left);
     } else {
-      return (currentNode.right = this.find(value, currentNode.right));
+      return this.find(value, currentNode.right);
     }
   }
+  
 
   levelOrder(callback) {
     if (typeof callback !== "function")
@@ -182,8 +185,13 @@ class Tree {
     ? -1 
     : Math.max(this.height(node.left), this.height(node.right)) + 1;
   }
+  
+  printTree(currentNode = this.root) {
+    return currentNode.right.data;
+  }
 
   depth(targetNode, currentNode = this.root, currentDepth = 0) {
+    return currentNode;
     if (currentNode === null) {
       console.log(`Reached a null node. Returning -1. Current depth: ${currentDepth}`);
       return -1; // Node not found
@@ -193,7 +201,6 @@ class Tree {
       `Visiting node with value: ${currentNode.data}, target node: ${targetNode.data}, current depth: ${currentDepth}`
     );
   
-    // If we find the target node, return the current depth
     if (currentNode.data === targetNode.data) {
       console.log(
         `Target node found! Value: ${currentNode.data}, Depth: ${currentDepth}`
@@ -201,7 +208,6 @@ class Tree {
       return currentDepth;
     }
   
-    // Recursively search in the left or right subtree
     if (targetNode.data < currentNode.data) {
       console.log(
         `Target node (${targetNode.data}) is less than current node (${currentNode.data}). Recursing left.`
@@ -220,10 +226,12 @@ class Tree {
 const sampleArray = [7, 3, 10, 5, 2, 8, 1, 6, 9, 4];
 const arrayOfFive = [1, 10, 5, 6, 5, 5, 6, 8];
 
-const tree = new Tree(sampleArray);
+const tree = new Tree(arrayOfFive);
 // tree.insert(7);
 tree.prettyPrint();
+console.log(tree.root.right);
+let findHeight = tree.find(10);
+console.log(tree.depth(findHeight).right);
+
 // tree.inOrder(node => console.log(node.data));
 // tree.postOrder(node => console.log(node.data));
-let findHeight = tree.find(10);
-console.log(tree.depth(findHeight));
