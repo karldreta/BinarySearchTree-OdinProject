@@ -182,16 +182,48 @@ class Tree {
     ? -1 
     : Math.max(this.height(node.left), this.height(node.right)) + 1;
   }
+
+  depth(targetNode, currentNode = this.root, currentDepth = 0) {
+    if (currentNode === null) {
+      console.log(`Reached a null node. Returning -1. Current depth: ${currentDepth}`);
+      return -1; // Node not found
+    }
+  
+    console.log(
+      `Visiting node with value: ${currentNode.data}, target node: ${targetNode.data}, current depth: ${currentDepth}`
+    );
+  
+    // If we find the target node, return the current depth
+    if (currentNode.data === targetNode.data) {
+      console.log(
+        `Target node found! Value: ${currentNode.data}, Depth: ${currentDepth}`
+      );
+      return currentDepth;
+    }
+  
+    // Recursively search in the left or right subtree
+    if (targetNode.data < currentNode.data) {
+      console.log(
+        `Target node (${targetNode.data}) is less than current node (${currentNode.data}). Recursing left.`
+      );
+      return this.depth(targetNode, currentNode.left, currentDepth + 1);
+    } else {
+      console.log(
+        `Target node (${targetNode.data}) is greater than current node (${currentNode.data}). Recursing right.`
+      );
+      return this.depth(targetNode, currentNode.right, currentDepth + 1);
+    }
+  }  
 }
 
 // Sample Usage
-const sampleArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const sampleArray = [7, 3, 10, 5, 2, 8, 1, 6, 9, 4];
 const arrayOfFive = [1, 10, 5, 6, 5, 5, 6, 8];
 
-const tree = new Tree(sampleArr);
-tree.insert(7);
+const tree = new Tree(sampleArray);
+// tree.insert(7);
 tree.prettyPrint();
 // tree.inOrder(node => console.log(node.data));
 // tree.postOrder(node => console.log(node.data));
-let findHeight = tree.find(4);
-console.log(tree.height(findHeight));
+let findHeight = tree.find(10);
+console.log(tree.depth(findHeight));
