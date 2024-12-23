@@ -191,7 +191,6 @@ class Tree {
   }
 
   depth(targetNode, currentNode = this.root, currentDepth = 0) {
-    return currentNode;
     if (currentNode === null) {
       console.log(`Reached a null node. Returning -1. Current depth: ${currentDepth}`);
       return -1; // Node not found
@@ -229,9 +228,9 @@ const arrayOfFive = [1, 10, 5, 6, 5, 5, 6, 8];
 const tree = new Tree(arrayOfFive);
 // tree.insert(7);
 tree.prettyPrint();
-console.log(tree.root.right);
+// console.log(tree.root.right);
 let findHeight = tree.find(10);
-console.log(tree.depth(findHeight).right);
+console.log(tree.depth(findHeight));
 
 // tree.inOrder(node => console.log(node.data));
 // tree.postOrder(node => console.log(node.data));
